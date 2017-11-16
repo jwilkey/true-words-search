@@ -15,6 +15,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import axios from 'axios'
+import bibleService from '../services/bible-service'
 
 export default {
   name: 'CrossReferences',
@@ -29,11 +30,13 @@ export default {
   watch: {
     crossReferences () {
       const self = this
-      const passages = Object.values(this.crossReferences).map(v => v.join(',')).join(',')
-      console.log(passages)
-      axios.get(`http://localhost:3100/texts/${passages}`)
-      .then(response => {
-        self.verses = response.data.response.search.result.passages
+      var passages = []
+      Object.values(this.crossReferences).forEach(v => {
+        passages = passages.concat(v)
+      })
+      bibleService.fetchTexts(passages)
+      .then(verses => {
+        self.verses = verses
       })
     }
   },

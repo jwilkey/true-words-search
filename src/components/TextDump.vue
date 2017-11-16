@@ -8,6 +8,7 @@
 <script>
 import { mapActions } from 'vuex'
 import axios from 'axios'
+import bibleService from '../services/bible-service'
 
 export default {
   name: 'TextDump',
@@ -23,11 +24,9 @@ export default {
     },
     fetchCrossReferences () {
       const self = this
-      axios.post('http://localhost:3100/cross-reference', {text: this.text}, {
-        headers: { 'Content-Type': 'application/json' }
-      })
-      .then(response => {
-        self.setCrossReferences(response.data)
+      bibleService.fetchCrossReferences(this.text)
+      .then(crossReferences => {
+        self.setCrossReferences(crossReferences)
       })
     }
   }
