@@ -14,5 +14,11 @@ export default {
     .then(response => {
       return response.data.response.search.result.passages
     })
+  },
+  search (query) {
+    return axios.get(`http://localhost:3100/search/${query}`)
+    .then(response => {
+      return response.data
+    })
   }
 }
