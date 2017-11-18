@@ -37,7 +37,7 @@
 import bibleService from '../services/bible-service'
 import synonymService from '../services/synonym-service'
 
-function l(text) {
+function l (text) {
   return text.toLowerCase()
 }
 
