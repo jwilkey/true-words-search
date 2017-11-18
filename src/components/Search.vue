@@ -3,11 +3,11 @@
     <div class="search-form flex-column" :class="{'flex-center': !results}">
       <form @submit.prevent="search" class="theme-mid shadow flex-row">
         <div class="flex-row flex-one align-center">
-          <label for="search" class="muted"><i class="fa fa-search"></i></label>
-          <input name="search" class="hi-bottom flex-one" placeholder="search" v-model="query" autofocus />
+          <button type="submit" class="callout-light"><i class="fa fa-search"></i></button>
+          <input name="search" :keyup.enter="search" class="hi-bottom flex-one" placeholder="search" v-model="query" autofocus />
         </div>
         <div v-if="results" class="filter flex-row flex-one align-center">
-          <label for="filter" class="muted"><i class="fa fa-filter"></i></label>
+          <label for="filter" class="muted"><i class="fa fa-filter blue"></i></label>
           <input name="filter" class="hi-bottom flex-one" placeholder="filter" v-model="filter" />
         </div>
       </form>
@@ -68,13 +68,17 @@ export default {
   },
   methods: {
     highlightQuery (text) {
-      var re = new RegExp(this.fetchedQuery, "g")
-      return text.replace(re, `<span class="back-orange">${this.fetchedQuery}</span>`)
+      var re = new RegExp(`(${this.fetchedQuery})`, 'gi')
+      var filterReg = new RegExp(`(${this.filter})`, 'gi')
+      var t = this.filter ? text.replace(filterReg, '<span class="back-blue">$1</span>') : text
+      return t.replace(re, '<span class="back-orange">$1</span>')
     },
     highlightSyns (text) {
       const pattern = `(${this.synonyms.join('|')})`
-      var re = new RegExp(pattern, "g")
-      return text.replace(re, '<span class="back-red">$1</span>')
+      var re = new RegExp(pattern, 'gi')
+      var filterReg = new RegExp(`(${this.filter})`, 'gi')
+      const t = this.filter ? text.replace(filterReg, '<span class="back-blue">$1</span>') : text
+      return t.replace(re, '<span class="back-red">$1</span>')
     },
     search () {
       this.results = undefined
@@ -121,7 +125,7 @@ export default {
     padding: 20px 20px;
     border-radius: 2px;
     z-index: 100;
-    i {
+    button {
       margin-right: 7px;
     }
   }
@@ -135,8 +139,8 @@ export default {
       padding: 5px;
       margin-bottom: 8px;
       .back-orange, .back-red {
-        padding-left: 2px;
-        padding-right: 2px;
+        padding-left: 1px;
+        padding-right: 1px;
       }
       .reference {
         font-weight: bold;
