@@ -1,0 +1,65 @@
+@import './themes/light-theme.less';
+@import './themes/dark-theme.less';
+
+@color-highlight-orange: #FFB347;
+@color-highlight-red: #FF6961;
+@color-highlight-purple: #B19CD9;
+@color-highlight-blue: #56CEE1;
+@color-highlight-green: #77DD77;
+@color-highlight-contrast: #0c0c0c;
+
+@color-help-back: #eaeaea;
+@color-help: #483d8b;
+@color-help-secondary: #666669;
+
+.highlight-text {
+  text-shadow: 1px 0px 1px @color-highlight-contrast;
+  color: white;
+}
+.back-green {
+  text-shadow: 1px 0px 1px @color-highlight-contrast;
+  color: white;
+  background-color: @color-highlight-green !important;
+}
+.back-orange {
+  text-shadow: 1px 0px 1px @color-highlight-contrast;
+  color: white;
+  background-color: @color-highlight-orange !important;
+}
+.back-red {
+  text-shadow: 1px 0px 1px @color-highlight-contrast;
+  color: white;
+  background-color: @color-highlight-red !important;
+}
+.back-blue {
+  text-shadow: 1px 0px 1px @color-highlight-contrast;
+  color: white;
+  background-color: @color-highlight-blue !important;
+}
+.back-purple {
+  text-shadow: 1px 0px 1px @color-highlight-contrast;
+  color: white;
+  background-color: @color-highlight-purple !important;
+}
+
+@color-text-shadow: 1px 0px 0px @color-highlight-contrast;
+.orange {
+  color: @color-highlight-orange;
+  text-shadow: 1px 0px 0px darken(@color-highlight-orange, 30%);
+}
+.blue {
+  color: @color-highlight-blue;
+  text-shadow: 1px 0px 0px darken(@color-highlight-blue, 30%);
+}
+.purple {
+  color: @color-highlight-purple;
+  text-shadow: 1px 0px 0px darken(@color-highlight-purple, 30%);
+}
+.red {
+  color: @color-highlight-red;
+  text-shadow: 1px 0px 0px darken(@color-highlight-red, 30%);
+}
+.green {
+  color: @color-highlight-green;
+  text-shadow: 1px 0px 0px darken(@color-highlight-green, 30%);
+}
