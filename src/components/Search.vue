@@ -14,19 +14,23 @@
     </div>
 
     <div v-if="results" class="results flex-one flex-row">
-      <div class="flex-one substance">
-        <p class="title callout-light shadow">{{ results.length }} verses</p>
-        <div class="verse theme-mid shadow" v-for="verse in filteredResults">
-          <span class="reference callout-light alt">{{verse.book_name}} {{verse.chapter_id}}:{{verse.verse_id}}</span>
-          <span class="verse-text" v-html="highlightQuery(verse.verse_text)"></span>
+      <div class="flex-one flex-column">
+        <p class="title back-orange shadow">{{ results.length }} verses</p>
+        <div class="flex-one substance">
+          <div class="verse theme-mid shadow" v-for="verse in filteredResults">
+            <span class="reference callout-light alt">{{verse.book_name}} {{verse.chapter_id}}:{{verse.verse_id}}</span>
+            <span class="verse-text" v-html="highlightQuery(verse.verse_text)"></span>
+          </div>
         </div>
       </div>
 
-      <div v-if="synResults" class="flex-one substance">
-        <p class="title callout-light shadow">{{synonyms.length}} synonyms, {{synResults.length}} verses</p>
-        <div class="verse theme-mid shadow" v-for="verse in filteredSynResults">
-          <span class="reference callout-light alt">{{verse.book_name}} {{verse.chapter_id}}:{{verse.verse_id}}</span>
-          <span class="verse-text" v-html="highlightSyns(verse.verse_text)"></span>
+      <div v-if="synResults" class="flex-one flex-column">
+        <p class="title back-red shadow">{{synonyms.length}} synonyms, {{synResults.length}} verses</p>
+        <div class="flex-one substance">
+          <div class="verse theme-mid shadow" v-for="verse in filteredSynResults">
+            <span class="reference callout-light alt">{{verse.book_name}} {{verse.chapter_id}}:{{verse.verse_id}}</span>
+            <span class="verse-text" v-html="highlightSyns(verse.verse_text)"></span>
+          </div>
         </div>
       </div>
     </div>
@@ -131,9 +135,9 @@ export default {
   }
 
   .results {
-    .flex-one {
-      padding-left: 6px;
-      padding-right: 2px;
+    .substance {
+      padding-left: 5px;
+      padding-right: 5px;
     }
     .verse {
       padding: 5px;
@@ -147,9 +151,8 @@ export default {
       }
     }
     .title {
-      padding: 5px;
-      margin-bottom: 8px;
-      border-radius: 2px;
+      padding: 5px 10px;
+      z-index: 50;
     }
   }
 }
