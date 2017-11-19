@@ -1,6 +1,6 @@
 <template>
   <div class="search flex-column">
-    <div class="search-form flex-column" :class="{'flex-center': !results}">
+    <div class="search-form flex-column" :class="{'center': !results}">
       <form @submit.prevent="search" class="theme-mid shadow flex-row">
         <div class="flex-row flex-one align-center">
           <button type="submit" class="callout-light"><i class="fa fa-search"></i></button>
@@ -13,7 +13,7 @@
       </form>
     </div>
 
-    <div v-if="results" class="results flex-one flex-row">
+    <div v-if="results" class="results flex-one flex-row" :class="{blur: loading}">
       <div class="flex-one flex-column">
         <p class="title back-orange shadow">{{ results.length }} verses</p>
         <div class="flex-one substance">
@@ -24,7 +24,7 @@
         </div>
       </div>
 
-      <div v-if="synResults" class="flex-one flex-column">
+      <div v-if="synResults" class="synonyms flex-one flex-column" :class="{faded: loadingSynonyms}">
         <p class="title back-red shadow">{{synonyms.length}} synonyms, {{synResults.length}} verses</p>
         <div class="flex-one substance">
           <div class="verse theme-mid shadow" v-for="verse in filteredSynResults">
@@ -33,6 +33,10 @@
           </div>
         </div>
       </div>
+    </div>
+
+    <div v-if="loading" class="loading">
+      <i class="fa fa-circle-o-notch fa-spin fa-3x green"></i>
     </div>
   </div>
 </template>
@@ -50,6 +54,8 @@ export default {
     return {
       query: '',
       fetchedQuery: '',
+      loading: false,
+      loadingSynonyms: false,
       filter: '',
       results: undefined,
       synonyms: undefined,
@@ -85,15 +91,18 @@ export default {
       return t.replace(re, '<span class="back-red">$1</span>')
     },
     search () {
-      this.results = undefined
-      this.synonyms = undefined
-      this.synResults = undefined
+      this.loading = true
+      this.loadingSynonyms = true
 
       const self = this
       bibleService.search(this.query)
       .then(results => {
         self.fetchedQuery = self.query
         self.results = results[1]
+        self.loading = false
+      })
+      .catch(e => {
+        self.loading = false
       })
 
       synonymService.fetchSynonyms(this.query)
@@ -102,7 +111,11 @@ export default {
         bibleService.search(self.synonyms.join('|'))
         .then(results => {
           self.synResults = results[1]
+          self.loadingSynonyms = false
         })
+      })
+      .catch(e => {
+        self.loadingSynonyms = false
       })
     }
   }
@@ -110,17 +123,19 @@ export default {
 </script>
 
 <style lang="less">
+@import '../../static/less/common.less';
+
 .search {
   height: 100%;
   .search-form {
-    transition: justify-content 0.3s;
+    margin-top: 0%;
+    transition: margin-top 0.7s;
     .filter {
       margin-left: 20px;
     }
   }
-  .search-form.flex-center {
-    height: 80%;
-    margin-bottom: 20px;
+  .search-form.center {
+    margin-top: 30%;
     form {
       padding: 20px 50px;
     }
@@ -154,6 +169,23 @@ export default {
       padding: 5px 10px;
       z-index: 50;
     }
+    .synonyms {
+      transition: opacity 0.3s;
+    }
+  }
+}
+.loading {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+  text-align: center;
+  z-index: 1000;
+  i {
+    margin-top: 40%;
+    text-shadow: 1px 0px 3px black;
   }
 }
 </style>
