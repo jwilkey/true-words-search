@@ -5,7 +5,7 @@
       <div class="verse hi-bottom" v-for="verseRef in verseRefs">
         <p class="verse-ref">{{ formatted(verseRef[0]) }}</p>
         <transition name="fade">
-          <p class="verse-text" v-html="verseText(verseRef[0])"></p>
+          <div class="verse-text" v-html="verseText(verseRef[0])"></div>
         </transition>
       </div>
     </div>
@@ -55,6 +55,15 @@ export default {
 }
 </script>
 
+<style lang="less">
+.verse-text {
+  h3.s1 {
+    font-size: 18px;
+    margin: 0;
+  }
+}
+</style>
+
 <style lang="less" scoped>
 .cross-references {
   padding-left: 5px;
@@ -63,13 +72,6 @@ export default {
 .topic-group {
   z-index: 1;
 }
-.topic-group:hover {
-  opacity: 0.9;
-  transition: transform 0.3s, opacity 0.3s;
-  .verse-ref {
-    transform: translateX(5px);
-  }
-}
 .topic {
   padding: 8px;
   margin-left: -5px;
@@ -77,9 +79,14 @@ export default {
 .verse {
   padding: 8px;
   margin-left: 10px;
-  transition: transform 0.3s;
   .verse-ref {
     font-weight: bold;
+  }
+  .verse-text {
+    h3 {
+      font-size: 18px;
+      margin: 0;
+    }
   }
   &:last-child {
     border-bottom: none;
