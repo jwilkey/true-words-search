@@ -1,16 +1,24 @@
 <template>
   <div class="search flex-column">
-    <div class="search-form flex-column" :class="{'center': !results}">
-      <form @submit.prevent="search" class="theme-mid shadow flex-row">
+    <div class="theme-mid shadow search-form flex-column">
+      <form @submit.prevent="search" class="flex-row">
         <div class="flex-row flex-one align-center">
           <button type="submit" class="callout-light"><i class="fa fa-search"></i></button>
           <input name="search" :keyup.enter="search" class="hi-bottom flex-one" placeholder="search" v-model="query" autofocus />
         </div>
+
         <div v-if="results" class="filter flex-row flex-one align-center">
           <label for="filter" class="muted"><i class="fa fa-filter blue"></i></label>
           <input name="filter" class="hi-bottom flex-one" placeholder="filter" v-model="filter" />
+          <button class="callout-light font-smaller" @click.prevent="toggleAdvanced"><i class="fa fa-gears"></i></button>
         </div>
       </form>
+
+      <div v-if="showAdvanced" class="advanced hi-top">
+        <button class="callout-light" @click="togglePos('n')" :class="posClass('n')">Nouns</button>
+        <button class="callout-light" @click="togglePos('a')" :class="posClass('a')">Adjectives</button>
+        <button class="callout-light" @click="togglePos('v')" :class="posClass('v')">Verbs</button>
+      </div>
     </div>
 
     <div v-if="results" class="results flex-one flex-row" :class="{blur: loading}">
@@ -43,7 +51,6 @@
 
 <script>
 import bibleService from '../services/bible-service'
-import synonymService from '../services/synonym-service'
 
 function l (text) {
   return text.toLowerCase()
@@ -57,6 +64,8 @@ export default {
       loading: false,
       loadingSynonyms: false,
       filter: '',
+      showAdvanced: false,
+      pos: undefined,
       results: undefined,
       synonyms: undefined,
       synResults: undefined
@@ -90,9 +99,15 @@ export default {
       const t = this.filter ? text.replace(filterReg, '<span class="back-blue">$1</span>') : text
       return t.replace(re, '<span class="back-red">$1</span>')
     },
+    togglePos (pos) {
+      this.pos = this.pos === pos ? undefined : pos
+      this.fetchSynonyms()
+    },
+    posClass (pos) {
+      return this.pos === pos ? ['back-red'] : []
+    },
     search () {
       this.loading = true
-      this.loadingSynonyms = true
 
       const self = this
       bibleService.search(this.query)
@@ -101,11 +116,14 @@ export default {
         self.results = results[1]
         self.loading = false
       })
-      .catch(e => {
-        self.loading = false
-      })
+      .catch(e => { self.loading = false })
 
-      synonymService.fetchSynonyms(this.query)
+      this.fetchSynonyms()
+    },
+    fetchSynonyms () {
+      const self = this
+      this.loadingSynonyms = true
+      bibleService.synonyms(this.query, this.pos)
       .then(synonyms => {
         self.synonyms = synonyms.filter(s => !s.includes('antonym') && s.length > 2)
         bibleService.search(self.synonyms.join('|'))
@@ -114,9 +132,10 @@ export default {
           self.loadingSynonyms = false
         })
       })
-      .catch(e => {
-        self.loadingSynonyms = false
-      })
+      .catch(e => { self.loadingSynonyms = false })
+    },
+    toggleAdvanced () {
+      this.showAdvanced = !this.showAdvanced
     }
   }
 }
@@ -132,6 +151,9 @@ export default {
     transition: margin-top 0.7s;
     .filter {
       margin-left: 20px;
+      button {
+        margin-left: 20px;
+      }
     }
   }
   .search-form.center {
@@ -147,6 +169,10 @@ export default {
     button {
       margin-right: 7px;
     }
+  }
+
+  .advanced {
+    padding: 5px 20px;
   }
 
   .results {

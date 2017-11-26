@@ -23,5 +23,12 @@ export default {
     .then(response => {
       return response.data
     })
+  },
+  synonyms (query, pos) {
+    const params = pos ? `?pos=${pos}` : ''
+    return axios.get(`${url}/synonyms/${query}${params}`, config)
+    .then(response => {
+      return response.data
+    })
   }
 }
