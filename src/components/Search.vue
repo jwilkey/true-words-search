@@ -137,6 +137,12 @@ export default {
     toggleAdvanced () {
       this.showAdvanced = !this.showAdvanced
     }
+  },
+  mounted () {
+    this.query = this.$route.query.q
+    if (this.query) {
+      this.search()
+    }
   }
 }
 </script>
