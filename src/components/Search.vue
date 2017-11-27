@@ -4,7 +4,7 @@
       <form @submit.prevent="search" class="flex-row">
         <div class="flex-row flex-one align-center">
           <button type="submit" class="callout-light"><i class="fa fa-search"></i></button>
-          <input name="search" :keyup.enter="search" class="hi-bottom flex-one" placeholder="search" v-model="query" autofocus />
+          <input name="search" :keyup.enter="search" class="hi-bottom flex-one" placeholder="search" v-model="query" autocomplete="off" autofocus />
         </div>
 
         <div v-if="results" class="filter flex-row flex-one align-center">
@@ -43,9 +43,11 @@
       </div>
     </div>
 
-    <div v-if="loading" class="loading">
-      <i class="fa fa-circle-o-notch fa-spin fa-3x green"></i>
-    </div>
+    <transition name="fade">
+      <div v-if="loading" class="loading theme-mid">
+        <i class="fa fa-circle-o-notch fa-spin fa-3x callout-light alt"></i>
+      </div>
+    </transition>
   </div>
 </template>
 
@@ -212,7 +214,6 @@ export default {
   bottom: 0;
   left: 0;
   right: 0;
-  background-color: rgba(0, 0, 0, 0.4);
   text-align: center;
   z-index: 1000;
   i {
