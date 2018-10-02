@@ -25,7 +25,7 @@
       <div class="flex-one flex-column">
         <p class="title back-orange shadow">{{ results.length }} verses</p>
         <div class="flex-one substance">
-          <div class="verse theme-mid shadow" v-for="verse in filteredResults">
+          <div class="verse theme-mid shadow" v-for="verse in filteredResults" @click="verseSelected(verse)">
             <span class="reference callout-light alt">{{verse.book_name}} {{verse.chapter_id}}:{{verse.verse_id}}</span>
             <span class="verse-text" v-html="highlightQuery(verse.verse_text)"></span>
           </div>
@@ -135,6 +135,11 @@ export default {
         })
       })
       .catch(e => { self.loadingSynonyms = false })
+    },
+    verseSelected (verse) {
+      const url = `https://truewordsapp.com/#/viewpassage?book=${verse.book_name}&chapter=${verse.chapter_id}`
+      var win = window.open(url, '_blank')
+      win.focus()
     },
     toggleAdvanced () {
       this.showAdvanced = !this.showAdvanced
