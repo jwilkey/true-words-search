@@ -137,7 +137,7 @@ export default {
       .catch(e => { self.loadingSynonyms = false })
     },
     verseSelected (verse) {
-      const url = `https://truewordsapp.com/#/viewpassage?book=${verse.book_name}&chapter=${verse.chapter_id}`
+      const url = `https://spotlight.truewordsapp.com/#/?passage=${verse.book_name}${verse.chapter_id}&selection=${this.query}`
       var win = window.open(url, '_blank')
       win.focus()
     },
