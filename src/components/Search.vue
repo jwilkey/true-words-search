@@ -83,7 +83,7 @@ export default {
   },
   methods: {
     filterVerses (v) {
-      l(v.verse_text).includes(l(this.filter)) || l(v.book_name).includes(l(this.filter))
+      return l(v.verse_text).includes(l(this.filter)) || l(v.book_name).includes(l(this.filter))
     },
     highlightQuery (text) {
       var re = new RegExp(`(${this.fetchedQuery})`, 'gi')
