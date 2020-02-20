@@ -21,10 +21,10 @@
       </div>
     </div>
 
-    <div v-if="results" class="results flex-one flex-row" :class="{blur: loading}">
+    <div v-if="results" class="results flex-one flex-row vfull" :class="{blur: loading}">
       <div class="flex-one flex-column">
         <p class="title back-orange shadow">{{ results.length }} verses</p>
-        <div class="flex-one substance">
+        <div class="flex-one substance scrolly">
           <div class="verse theme-mid shadow" v-for="verse in filteredResults" @click="verseSelected(verse)">
             <span class="reference callout-light alt">{{verse.book_name}} {{verse.chapter_id}}:{{verse.verse_id}}</span>
             <span class="verse-text" v-html="highlightQuery(verse.verse_text)"></span>
