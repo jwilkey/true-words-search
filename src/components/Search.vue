@@ -58,6 +58,8 @@ function l (text) {
   return text.toLowerCase()
 }
 
+const filterVerses = v => l(v.verse_text).includes(l(this.filter)) || l(v.book_name).includes(l(this.filter))
+
 export default {
   data () {
     return {
@@ -75,16 +77,10 @@ export default {
   },
   computed: {
     filteredResults () {
-      if (this.filter) {
-        return this.results.filter(v => l(v.verse_text).includes(l(this.filter)))
-      }
-      return this.results
+      return this.filter ? this.results.filter(filterVerses) : this.results
     },
     filteredSynResults () {
-      if (this.filter) {
-        return this.synResults.filter(v => l(v.verse_text).includes(l(this.filter)))
-      }
-      return this.synResults
+      return this.filter ? this.synResults.filter(filterVerses) : this.synResults
     }
   },
   methods: {
